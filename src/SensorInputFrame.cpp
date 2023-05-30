@@ -92,6 +92,9 @@ void SensorInputFrame::OnTextChange(wxCommandEvent& event)
 
 void SensorInputFrame::OnThreadEvent(wxCommandEvent& event)
 {
+/*    wxCriticalSectionLocker enter(sensor_analyzer_CS_);
+    if (!comm_channel_)*/
+    comm_channel_->close();
     int test = event.GetInt();
     int i = 7;
     wxString Foobar;
@@ -116,9 +119,9 @@ void SensorInputFrame::SetSensorAnalyzer()
 
 void SensorInputFrame::OnClose(wxCloseEvent& event)
 {
-    
     {
         wxCriticalSectionLocker enter(sensor_analyzer_CS_);
+        comm_channel_->close();
         if (sensor_analyzer_)         // does the thread still exist?
         {
             wxMessageOutputDebug().Printf("MYFRAME: deleting thread");

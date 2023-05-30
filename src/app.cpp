@@ -17,7 +17,7 @@
 // TODO camera can be accessed by another object other than the panel
 void createMonitorObjects(std::vector<std::shared_ptr<Camera>> &cameras)
 {
-    for (size_t nc = 0; nc < 4; nc++)
+    for (size_t nc = 1; nc < 5; nc++)
     {
         cameras.push_back(std::make_shared<Camera>(int(nc)));
     }
