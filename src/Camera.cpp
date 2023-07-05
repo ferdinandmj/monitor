@@ -10,11 +10,12 @@ END_EVENT_TABLE()*/
 
 wxPanel* Camera::mainPanel = nullptr;
 
-Camera::Camera(int id): id_(id), cap(0)
+Camera::Camera(int id): id_(id)
 {
     cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);
     cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
-
+    if (!cap.isOpened())
+        cap.open(0);
     this->Connect(wxID_ANY, wxEVT_TIMER, wxTimerEventHandler(Camera::OnTimer));
     timer_.SetOwner(this);
     timer_.Start(TIMERVALUE, true);
@@ -44,7 +45,7 @@ void Camera::load()
     std::string image_name = std::to_string(getID()) + ".png";
     //wxMessageOutputDebug().Printf("getID %d", getID());
     std::cout << image_name << std::endl;
-    //image_ = wxImage(image_name, wxBITMAP_TYPE_PNG);
+    image_ = wxImage(image_name, wxBITMAP_TYPE_PNG);
     if ( !image_.IsOk() )
     {
         // need to lock here, accessed by multiple threads
@@ -62,6 +63,8 @@ wxImage Camera::getImage()
 
 void Camera::OnTimer(wxTimerEvent& event)
 {
+    // cv::VideoCapture cap1(0);
+
     if (cap.isOpened())
     {
         cv::Mat frame;
@@ -74,7 +77,7 @@ void Camera::OnTimer(wxTimerEvent& event)
 
     else
     {
-        std::cout << "Can't load camera " << std::endl;
+        std::cout << "Can't load camera " << id_ <<std::endl;
     }
 
 }

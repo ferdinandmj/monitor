@@ -25,7 +25,6 @@ wxThread::ExitCode SensorAnalyzer::Entry()
             return (wxThread::ExitCode)0;
         }
 
-
     }
     return (wxThread::ExitCode)0;
 
